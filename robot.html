@@ -17,20 +17,40 @@ blocks, cylinders, ...) and colors.
 
 <html lang="en-US">
     <head>
+        <!-- title of web page in URL -->
         <title>CG-PA3-AnthonyLupica</title>
+
+        <!-- scripts for vertex shader and fragment shader -->
+        <script id="vertex-shader" type="x-shader/x-vertex">
+            attribute vec4 vPosition;
+            void main()
+            {
+                gl_Position = vPosition;
+            }
+        </script>
+        <script id="fragment-shader" type="x-shader/x-fragment">
+            precision mediump float;
+            void main()
+            {
+                gl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );
+            }
+        </script>
+
+        <!-- include any files from the common folder here -->
+        <script type="text/javascript" src="Common/webgl-utils.js"></script>
+        <script type="text/javascript" src="Common/initShaders.js"></script>
+        <script type="text/javascript" src="Common/MV.js"></script>
     </head>
     <body onload="initCanvas();">
         <canvas id="robot-home" width="850" height="600">
             <!-- if this line is reached, the canvas element could not be processed -->
             Oh no! Looks like your browser doesn't support HTML5
         </canvas>
+        <!-- display a message beneath the canvas -->
         <i><br><strong>the robot lives above this text</strong></i>
         <i><br><br>Anthony Lupica [arl127@uakron.edu]</i>
         
         <!-- include robot.js here and call with onload event in body start tag (after canvas element has been processed) -->
         <script type="text/javascript" src="robot.js"></script>
-
-        <!-- include any files from the common folder here -->
-        <script type="text/javascript" src="Common/webgl-utils.js"></script>
     </body>
 </html>
