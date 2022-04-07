@@ -20,12 +20,15 @@ blocks, cylinders, ...) and colors.
         <title>CG-PA3-AnthonyLupica</title>
     </head>
     <body onload="initCanvas();">
-        <canvas id="robot-surface" width="600" height="600">
+        <canvas id="robot-home" width="850" height="600">
             <!-- if this line is reached, the canvas element could not be processed -->
             Oh no! Looks like your browser doesn't support HTML5
         </canvas>
         <i><br>the robot lives above this text</i>
         <!-- include robot.js here and call with onload event in body start tag (after canvas element has been processed) -->
         <script type="text/javascript" src="robot.js"></script>
+
+        <!-- include any files from the common folder here -->
+        <script type="text/javascript" src="Common/webgl-utils.js"></script>
     </body>
 </html>
