@@ -23,16 +23,24 @@ blocks, cylinders, ...) and colors.
         <!-- scripts for vertex shader and fragment shader -->
         <script id="vertex-shader" type="x-shader/x-vertex">
             attribute vec4 vPosition;
+            attribute vec4 vColor;
+            varying vec4 fColor;
+
+            uniform mat4 modelViewMatrix;
+            uniform mat4 projectionMatrix;
+            
             void main()
             {
-                gl_Position = vPosition;
+                gl_Position = projectionMatrix * modelViewMatrix * vPosition;
             }
         </script>
         <script id="fragment-shader" type="x-shader/x-fragment">
             precision mediump float;
+            varying vec4 fColor;
+
             void main()
             {
-                gl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );
+                gl_FragColor = fColor;
             }
         </script>
 
@@ -40,17 +48,85 @@ blocks, cylinders, ...) and colors.
         <script type="text/javascript" src="Common/webgl-utils.js"></script>
         <script type="text/javascript" src="Common/initShaders.js"></script>
         <script type="text/javascript" src="Common/MV.js"></script>
+
+        <!-- include robot.js here and call with onload event -->
+        <script type="text/javascript" src="robot.js"></script>
     </head>
-    <body onload="initCanvas();">
-        <canvas id="robot-home" width="850" height="600">
+    <body>
+        <!-- the menu for user input -->
+        <p><strong>Hi! I'm Ro-bot...beep boop.</strong></p>
+        <pre>
+            <strong>I know how to...<br></strong>
+            <i id="blink"><strong>Blink</strong></i> <i>/ “b”</i>
+            <i id="color"><strong>Change Color</strong></i> <i>/ “c”</i>
+            <i id="jump"><strong>Jump</strong></i> <i>/ “j”</i>
+            <i id="turn"><strong>Turn</strong></i> <i>/ “t”</i>
+            <i id="wave"><strong>Wave</strong></i> <i>/ “w”</i>
+            
+            <i id="default" style="color:white"><strong>Ro-bot is shy, please be careful when speaking to him...</strong></i> 
+            
+            <i id="quit"><strong>Quit</strong></i> <i>/ “q”</i>
+            <hr>
+            Tell Ro-bot what to do <input type="text" size="40" onkeydown="robotControl(event)" id="inputBox">
+        </pre>
+
+        <p id="test"></p>
+        
+        <!-- script for handling keyboard input -->
+        <script>
+            // triggered on key enter into text box
+            function robotControl(event) 
+            {
+                // reset colors to black
+                document.getElementById("blink").style.color = "black";
+                document.getElementById("color").style.color = "black";
+                document.getElementById("jump").style.color = "black";
+                document.getElementById("turn").style.color = "black";
+                document.getElementById("wave").style.color = "black";
+
+                // clear the input box buffer
+                document.getElementById("inputBox").value = " ";
+
+                // white-out invalid input message
+                document.getElementById("default").style.color = "white";
+
+                // switch statement to highlight the action requested
+                switch(event.key) 
+                {
+                    case 'b':
+                        myElement = document.getElementById("blink");
+                        myElement.style.color = "red";
+                        break;
+                    case 'c':
+                        myElement = document.getElementById("color");
+                        myElement.style.color = "red";
+                        break;
+                    case 'j':
+                        myElement = document.getElementById("jump");
+                        myElement.style.color = "red";
+                        break;
+                    case 't':
+                        myElement = document.getElementById("turn");
+                        myElement.style.color = "red";
+                        break;
+                    case 'w':
+                        myElement = document.getElementById("wave");
+                        myElement.style.color = "red";
+                        break;
+                    case 'q':
+                        // code to quit the program
+                        break;
+                    default:
+                        document.getElementById("default").style.color = "black";
+                        break;
+                }
+            }
+        </script>
+        <canvas id="robot-home" width="550" height="350">
             <!-- if this line is reached, the canvas element could not be processed -->
             Oh no! Looks like your browser doesn't support HTML5
         </canvas>
         <!-- display a message beneath the canvas -->
-        <i><br><strong>the robot lives above this text</strong></i>
         <i><br><br>Anthony Lupica [arl127@uakron.edu]</i>
-        
-        <!-- include robot.js here and call with onload event in body start tag (after canvas element has been processed) -->
-        <script type="text/javascript" src="robot.js"></script>
     </body>
 </html>
