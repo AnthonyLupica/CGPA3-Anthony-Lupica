@@ -56,15 +56,14 @@ var HEAD_HEIGHT       = 2.0;
 var HEAD_WIDTH        = 2.0;
 var HEAD_DEPTH        = 2.0;
 
-var LEG_HEIGHT        = 5.5;
-var LEG_WIDTH         = 3;
-var LEG_DEPTH         = 2.0;
+var LEFT_LEG_HEIGHT   = 5.5;
+var LEFT_LEG_WIDTH    = 1.0;
+var LEFT_LEG_DEPTH    = 2.0;
 
+var RIGHT_LEG_HEIGHT  = 5.5;
+var RIGHT_LEG_WIDTH   = 1.0;
+var RIGHT_LEG_DEPTH   = 2.0;
 
-//var LOWER_ARM_HEIGHT  = 5.0;
-//var LOWER_ARM_WIDTH   = 0.5;
-//var UPPER_ARM_HEIGHT  = 5.0;
-//var UPPER_ARM_WIDTH   = 0.5;
 //--------------------------------------------------
 
 // Shader transformation matrices
@@ -190,21 +189,21 @@ window.onload = function initCanvas()
             
         }
     }
-
-    document.getElementById("inputBox").onkeyup = function handleTurn(event)  
+    */
+    document.getElementById("inputBox").onkeyup = function handleColor(event)  
     {
         if (event.key == 'c')
         {
-            
+         
         }
     }
-*/
+
     // currently doesn't work 
     document.getElementById("inputBox").onkeyup = function handleJump(event)  
     {
         if (event.key == 'j')
         {
-            jump[1] += 10;
+
         }
     }
     
@@ -224,7 +223,6 @@ window.onload = function initCanvas()
             
         }
     }
-   
     */
     render();
 }
@@ -255,8 +253,8 @@ function head()
 
 function leftLeg() 
 {
-    var s = scale4(LEG_WIDTH, LEG_HEIGHT, LEG_DEPTH);
-    var instanceMatrix = mult( translate( 0.0, 0.5 * LEG_HEIGHT, 0.0 ), s);
+    var s = scale4(LEFT_LEG_WIDTH, LEFT_LEG_HEIGHT, LEFT_LEG_DEPTH);
+    var instanceMatrix = mult( translate( 0.0, 0.5 * LEFT_LEG_HEIGHT, 0.0 ), s);
     var t = mult(modelViewMatrix, instanceMatrix);
     gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(t) );
     gl.drawArrays( gl.TRIANGLES, 0, NumVertices );
@@ -264,6 +262,16 @@ function leftLeg()
 
 //----------------------------------------------------------------------------
 
+function rightLeg() 
+{
+    var s = scale4(RIGHT_LEG_WIDTH, RIGHT_LEG_HEIGHT, RIGHT_LEG_DEPTH);
+    var instanceMatrix = mult( translate( 0.0, 0.5 * RIGHT_LEG_HEIGHT, 0.0 ), s);
+    var t = mult(modelViewMatrix, instanceMatrix);
+    gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(t) );
+    gl.drawArrays( gl.TRIANGLES, 0, NumVertices );
+}
+
+//----------------------------------------------------------------------------
 
 var render = function() {
 
@@ -272,13 +280,17 @@ var render = function() {
     modelViewMatrix = rotate(theta[0], 0, 1, 0);
     chest();
 
-    modelViewMatrix = mult(modelViewMatrix, translate(0.0, CHEST_HEIGHT, 0.0));
+    modelViewMatrix = mult(modelViewMatrix, translate(0.0, CHEST_HEIGHT + 0.25, 0.0));
     modelViewMatrix = mult(modelViewMatrix, rotate(0, 0, 1, 0));
     head();
 
-    modelViewMatrix  = mult(modelViewMatrix, translate(0.0, -CHEST_HEIGHT * 2, 0.0));
+    modelViewMatrix  = mult(modelViewMatrix, translate(-CHEST_WIDTH * 0.25, (-CHEST_HEIGHT * 2) - 0.5, 0.0));
     modelViewMatrix  = mult(modelViewMatrix, rotate(0, 0, 1, 0) );
     leftLeg(); 
+
+    modelViewMatrix  = mult(modelViewMatrix, translate(CHEST_WIDTH * 0.50, 0.0, 0.0));
+    modelViewMatrix  = mult(modelViewMatrix, rotate(0, 0, 1, 0) );
+    rightLeg(); 
 
     requestAnimFrame(render);
 }
