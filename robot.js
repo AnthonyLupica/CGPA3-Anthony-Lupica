@@ -178,10 +178,12 @@ window.onload = function initCanvas()
     gl.uniformMatrix4fv( gl.getUniformLocation(program, "projectionMatrix"),  false, flatten(projectionMatrix) );
 
     //--functions for handling user input to make transformations--//
-    document.getElementById("inputBox").onkeyup = function(event)  
+    document.getElementById("inputBox").onkeyup = function handleTurn(event)  
     {
-        
-        theta[0] += 15;
+        if (event.key == 't')
+        {
+            theta[0] += 15;
+        }
     }
     /*
     document.getElementById("slider2").onchange = function(event) {
