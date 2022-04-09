@@ -145,38 +145,18 @@ window.onload = function initCanvas()
         alert("WebGL isn't available on your browser");
     }
 
-    /*
-    //--functions for handling user input to make transformations--//
-    document.getElementById("inputBox").onkeyup = function handleBlink(event)  
-    {
-        if (event.key == 'b')
-        {
-            
-        }
-    }
     
-    document.getElementById("inputBox").onkeyup = function handleColor(event)  
-    {
-        if (event.key == 'c')
-        {
-         
-        }
-    }
+    //--function for handling user input to make transformations--//
+
+ 
     
 
     
-    // currently doesn't work 
-    document.getElementById("inputBox").onkeyup = function handleJump(event)  
-    {
-        if (event.key == 'j')
-        {
-            jump[1] += 10;
-        }
-    } 
-    */
+  
+    
     
     // onkeypress is deprecated... this whole thing might break in a few years
-    document.getElementById("inputBox").onkeypress = function handleTurn(event)  
+    document.getElementById("inputBox").onkeypress = function handleControls(event)  
     {
         if (event.key == 't')
         {
@@ -193,6 +173,21 @@ window.onload = function initCanvas()
                 handleDown();
             }
         } 
+        if (event.key == 'w')
+        {
+            if (theta[1] == 0)
+            {
+                theta[1] += 75;
+            }
+            else if (theta[1] == 75)
+            {
+                theta[1] -= 75;
+            }
+        }
+        if (event.key == 'q')
+        {
+            window.close();
+        }
     }
 
     document.getElementById("inputBox").onkeyup = function handleDown(event) 
@@ -203,15 +198,7 @@ window.onload = function initCanvas()
         }
     }
 
-    /*
-    document.getElementById("inputBox").onkeyup = function handleWave(event)  
-    {
-        if (event.key == 'w')
-        {
-            
-        }
-    }
-    */
+   
 
     //--Configure WebGL--//
     
@@ -351,8 +338,9 @@ var render = function() {
     modelViewMatrix  = mult(modelViewMatrix, rotate(0, 0, 1, 0));
     leftArm(); 
 
-    modelViewMatrix  = mult(modelViewMatrix, translate(CHEST_WIDTH + 1.25, 0.0, 0.0));
-    modelViewMatrix  = mult(modelViewMatrix, rotate(0, 0, 1, 0));
+    modelViewMatrix  = mult(modelViewMatrix, translate(CHEST_WIDTH + 1.25, 5, 0.0));
+    modelViewMatrix  = mult(modelViewMatrix, rotate(180, 0, 0, 1));
+    modelViewMatrix  = mult(modelViewMatrix, rotate(theta[1], 0, 0, 1));
     rightArm(); 
 
     requestAnimFrame(render);
