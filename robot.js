@@ -138,6 +138,51 @@ window.onload = function initCanvas()
         alert("WebGL isn't available on your browser");
     }
 
+    /*
+    //--functions for handling user input to make transformations--//
+    document.getElementById("inputBox").onkeyup = function handleBlink(event)  
+    {
+        if (event.key == 'b')
+        {
+            
+        }
+    }
+    */
+    document.getElementById("inputBox").onkeyup = function handleColor(event)  
+    {
+        if (event.key == 'c')
+        {
+         
+        }
+    }
+
+    // currently doesn't work 
+    document.getElementById("inputBox").onkeyup = function handleJump(event)  
+    {
+        if (event.key == 'j')
+        {
+
+        }
+    }
+    
+    document.getElementById("inputBox").onkeyup = function handleTurn(event)  
+    {
+        if (event.key == 't')
+        {
+            theta[0] += 15;
+        }
+    }
+
+    /*
+    document.getElementById("inputBox").onkeyup = function handleWave(event)  
+    {
+        if (event.key == 'w')
+        {
+            
+        }
+    }
+    */
+
     //--Configure WebGL--//
     
     // set viewing window
@@ -180,50 +225,6 @@ window.onload = function initCanvas()
     projectionMatrix = ortho(-10, 10, -10, 10, -10, 10);
     gl.uniformMatrix4fv( gl.getUniformLocation(program, "projectionMatrix"),  false, flatten(projectionMatrix) );
 
-    /*
-    //--functions for handling user input to make transformations--//
-    document.getElementById("inputBox").onkeyup = function handleTurn(event)  
-    {
-        if (event.key == 'b')
-        {
-            
-        }
-    }
-    */
-    document.getElementById("inputBox").onkeyup = function handleColor(event)  
-    {
-        if (event.key == 'c')
-        {
-         
-        }
-    }
-
-    // currently doesn't work 
-    document.getElementById("inputBox").onkeyup = function handleJump(event)  
-    {
-        if (event.key == 'j')
-        {
-
-        }
-    }
-    
-    document.getElementById("inputBox").onkeyup = function handleTurn(event)  
-    {
-        if (event.key == 't')
-        {
-            theta[0] += 15;
-        }
-    }
-
-    /*
-    document.getElementById("inputBox").onkeyup = function handleTurn(event)  
-    {
-        if (event.key == 'w')
-        {
-            
-        }
-    }
-    */
     render();
 }
 
