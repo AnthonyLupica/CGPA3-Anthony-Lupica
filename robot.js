@@ -64,16 +64,23 @@ var RIGHT_LEG_HEIGHT  = 5.5;
 var RIGHT_LEG_WIDTH   = 1.0;
 var RIGHT_LEG_DEPTH   = 2.0;
 
+var LEFT_ARM_HEIGHT   = 5.0;
+var LEFT_ARM_WIDTH    = 0.75;
+var LEFT_ARM_DEPTH    = 2.0;
+
+var RIGHT_ARM_HEIGHT  = 5.0;
+var RIGHT_ARM_WIDTH   = 0.75;
+var RIGHT_ARM_DEPTH   = 2.0;
+
 //--------------------------------------------------
 
 // Shader transformation matrices
 var modelViewMatrix, projectionMatrix, modelViewMatrixLoc;
 
 // declare array for rotation (x, y, z) in degrees. Init to 0
-var theta= [0, 0, 0];
-
+var theta = [0, 0, 0];
 // declare array for translation
-var jump= [0, 0, 0];
+var jump = [0, 0, 0];
 
 // buffers for GPU
 var vBuffer, cBuffer;
@@ -147,7 +154,7 @@ window.onload = function initCanvas()
             
         }
     }
-    */
+    
     document.getElementById("inputBox").onkeyup = function handleColor(event)  
     {
         if (event.key == 'c')
@@ -155,21 +162,44 @@ window.onload = function initCanvas()
          
         }
     }
+    
 
+    
     // currently doesn't work 
     document.getElementById("inputBox").onkeyup = function handleJump(event)  
     {
         if (event.key == 'j')
         {
-
+            jump[1] += 10;
         }
-    }
+    } 
+    */
     
-    document.getElementById("inputBox").onkeyup = function handleTurn(event)  
+    // onkeypress is deprecated... this whole thing might break in a few years
+    document.getElementById("inputBox").onkeypress = function handleTurn(event)  
     {
         if (event.key == 't')
         {
             theta[0] += 15;
+        }
+        if (event.key == 'j')
+        {
+            if (jump[1] == 0)
+            {
+                jump[1] += 1.5;
+            }
+            else if (jump[1] == 1.5)
+            {
+                handleDown();
+            }
+        } 
+    }
+
+    document.getElementById("inputBox").onkeyup = function handleDown(event) 
+    {
+        if (event.key == 'j')
+        {
+            jump[1] -= 1.5;
         }
     }
 
@@ -211,6 +241,7 @@ window.onload = function initCanvas()
     gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0 );
     gl.enableVertexAttribArray( vPosition );
 
+    // Load the cBuffer into the GPU
     cBuffer = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, cBuffer );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(colors), gl.STATIC_DRAW );
@@ -274,11 +305,34 @@ function rightLeg()
 
 //----------------------------------------------------------------------------
 
+function leftArm() 
+{
+    var s = scale4(LEFT_ARM_WIDTH, LEFT_ARM_HEIGHT, LEFT_ARM_DEPTH);
+    var instanceMatrix = mult( translate( 0.0, 0.5 * LEFT_ARM_HEIGHT, 0.0 ), s);
+    var t = mult(modelViewMatrix, instanceMatrix);
+    gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(t) );
+    gl.drawArrays( gl.TRIANGLES, 0, NumVertices );
+}
+
+//----------------------------------------------------------------------------
+
+function rightArm() 
+{
+    var s = scale4(RIGHT_ARM_WIDTH, RIGHT_ARM_HEIGHT, RIGHT_ARM_DEPTH);
+    var instanceMatrix = mult( translate( 0.0, 0.5 * RIGHT_ARM_HEIGHT, 0.0 ), s);
+    var t = mult(modelViewMatrix, instanceMatrix);
+    gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(t) );
+    gl.drawArrays( gl.TRIANGLES, 0, NumVertices );
+}
+
+//----------------------------------------------------------------------------
+
 var render = function() {
 
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT );
 
-    modelViewMatrix = rotate(theta[0], 0, 1, 0);
+    modelViewMatrix = translate(0.0, jump[1], 0.0, 0);
+    modelViewMatrix = mult(modelViewMatrix, rotate(theta[0], 0, 1, 0));
     chest();
 
     modelViewMatrix = mult(modelViewMatrix, translate(0.0, CHEST_HEIGHT + 0.25, 0.0));
@@ -286,12 +340,20 @@ var render = function() {
     head();
 
     modelViewMatrix  = mult(modelViewMatrix, translate(-CHEST_WIDTH * 0.25, (-CHEST_HEIGHT * 2) - 0.5, 0.0));
-    modelViewMatrix  = mult(modelViewMatrix, rotate(0, 0, 1, 0) );
+    modelViewMatrix  = mult(modelViewMatrix, rotate(0, 0, 1, 0));
     leftLeg(); 
 
     modelViewMatrix  = mult(modelViewMatrix, translate(CHEST_WIDTH * 0.50, 0.0, 0.0));
-    modelViewMatrix  = mult(modelViewMatrix, rotate(0, 0, 1, 0) );
+    modelViewMatrix  = mult(modelViewMatrix, rotate(0, 0, 1, 0));
     rightLeg(); 
+
+    modelViewMatrix  = mult(modelViewMatrix, translate(-CHEST_WIDTH * 0.925, CHEST_HEIGHT, 0.0));
+    modelViewMatrix  = mult(modelViewMatrix, rotate(0, 0, 1, 0));
+    leftArm(); 
+
+    modelViewMatrix  = mult(modelViewMatrix, translate(CHEST_WIDTH + 1.25, 0.0, 0.0));
+    modelViewMatrix  = mult(modelViewMatrix, rotate(0, 0, 1, 0));
+    rightArm(); 
 
     requestAnimFrame(render);
 }
