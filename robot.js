@@ -59,7 +59,7 @@ var UPPER_ARM_WIDTH   = 0.5;
 //--------------------------------------------------
 
 // Shader transformation matrices
-var modelViewMatrix, projectionMatrix;
+var modelViewMatrix, projectionMatrix, modelViewMatrixLoc;
 
 var Chest = 0;
 var LowerArm = 1;
@@ -67,10 +67,6 @@ var UpperArm = 2;
 
 // declare array for rotation (x, y, z) in degrees. Init to 0
 var theta= [ 0, 0, 0];
-
-var angle = 0;
-
-var modelViewMatrixLoc;
 
 // buffers for GPU
 var vBuffer, cBuffer;
