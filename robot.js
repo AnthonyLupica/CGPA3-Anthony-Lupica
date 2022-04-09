@@ -47,26 +47,34 @@ var vertexColors =
 ];
 //--------------------------------------------------
 
-
 //--section for declaring values to control dimensions of Ro-bot's body parts--//
 var CHEST_HEIGHT      = 5.5;
-var CHEST_WIDTH       = 4.5;
+var CHEST_WIDTH       = 3.5;
 var CHEST_DEPTH       = 2.0;
-var LOWER_ARM_HEIGHT  = 5.0;
-var LOWER_ARM_WIDTH   = 0.5;
-var UPPER_ARM_HEIGHT  = 5.0;
-var UPPER_ARM_WIDTH   = 0.5;
+
+var HEAD_HEIGHT       = 2.0;
+var HEAD_WIDTH        = 2.0;
+var HEAD_DEPTH        = 2.0;
+
+var LEG_HEIGHT        = 5.5;
+var LEG_WIDTH         = 3;
+var LEG_DEPTH         = 2.0;
+
+
+//var LOWER_ARM_HEIGHT  = 5.0;
+//var LOWER_ARM_WIDTH   = 0.5;
+//var UPPER_ARM_HEIGHT  = 5.0;
+//var UPPER_ARM_WIDTH   = 0.5;
 //--------------------------------------------------
 
 // Shader transformation matrices
 var modelViewMatrix, projectionMatrix, modelViewMatrixLoc;
 
-var Chest = 0;
-var LowerArm = 1;
-var UpperArm = 2;
-
 // declare array for rotation (x, y, z) in degrees. Init to 0
-var theta= [ 0, 0, 0];
+var theta= [0, 0, 0];
+
+// declare array for translation
+var jump= [0, 0, 0];
 
 // buffers for GPU
 var vBuffer, cBuffer;
@@ -173,7 +181,33 @@ window.onload = function initCanvas()
     projectionMatrix = ortho(-10, 10, -10, 10, -10, 10);
     gl.uniformMatrix4fv( gl.getUniformLocation(program, "projectionMatrix"),  false, flatten(projectionMatrix) );
 
+    /*
     //--functions for handling user input to make transformations--//
+    document.getElementById("inputBox").onkeyup = function handleTurn(event)  
+    {
+        if (event.key == 'b')
+        {
+            
+        }
+    }
+
+    document.getElementById("inputBox").onkeyup = function handleTurn(event)  
+    {
+        if (event.key == 'c')
+        {
+            
+        }
+    }
+*/
+    // currently doesn't work 
+    document.getElementById("inputBox").onkeyup = function handleJump(event)  
+    {
+        if (event.key == 'j')
+        {
+            jump[1] += 10;
+        }
+    }
+    
     document.getElementById("inputBox").onkeyup = function handleTurn(event)  
     {
         if (event.key == 't')
@@ -181,14 +215,17 @@ window.onload = function initCanvas()
             theta[0] += 15;
         }
     }
-    /*
-    document.getElementById("slider2").onchange = function(event) {
-         theta[1] = event.target.value;
-    };
-    document.getElementById("slider3").onchange = function(event) {
-         theta[2] =  event.target.value;
-    }; */
 
+    /*
+    document.getElementById("inputBox").onkeyup = function handleTurn(event)  
+    {
+        if (event.key == 'w')
+        {
+            
+        }
+    }
+   
+    */
     render();
 }
 
@@ -199,30 +236,29 @@ function chest()
     var s = scale4(CHEST_WIDTH, CHEST_HEIGHT, CHEST_DEPTH);
     var instanceMatrix = mult( translate( 0.0, 0.5 * CHEST_HEIGHT, 0.0 ), s);
     var t = mult(modelViewMatrix, instanceMatrix);
-    gl.uniformMatrix4fv(modelViewMatrixLoc,  false, flatten(t) );
+    gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(t) );
     gl.drawArrays( gl.TRIANGLES, 0, NumVertices );
 }
 
 //----------------------------------------------------------------------------
 
-
-function upperArm() {
-    var s = scale4(UPPER_ARM_WIDTH, UPPER_ARM_HEIGHT, UPPER_ARM_WIDTH);
-    var instanceMatrix = mult(translate( 0.0, 0.5 * UPPER_ARM_HEIGHT, 0.0 ),s);
-    var t = mult(modelViewMatrix, instanceMatrix);
-    gl.uniformMatrix4fv( modelViewMatrixLoc,  false, flatten(t) );
-    gl.drawArrays( gl.TRIANGLES, 0, NumVertices );
-}
-
-//----------------------------------------------------------------------------
-
-
-function lowerArm()
+function head() 
 {
-    var s = scale4(LOWER_ARM_WIDTH, LOWER_ARM_HEIGHT, LOWER_ARM_WIDTH);
-    var instanceMatrix = mult( translate( 0.0, 0.5 * LOWER_ARM_HEIGHT, 0.0 ), s);
+    var s = scale4(HEAD_WIDTH, HEAD_HEIGHT, HEAD_DEPTH);
+    var instanceMatrix = mult( translate( 0.0, 0.5 * HEAD_HEIGHT, 0.0 ), s);
     var t = mult(modelViewMatrix, instanceMatrix);
-    gl.uniformMatrix4fv( modelViewMatrixLoc,  false, flatten(t) );
+    gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(t) );
+    gl.drawArrays( gl.TRIANGLES, 0, NumVertices );
+}
+
+//----------------------------------------------------------------------------
+
+function leftLeg() 
+{
+    var s = scale4(LEG_WIDTH, LEG_HEIGHT, LEG_DEPTH);
+    var instanceMatrix = mult( translate( 0.0, 0.5 * LEG_HEIGHT, 0.0 ), s);
+    var t = mult(modelViewMatrix, instanceMatrix);
+    gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(t) );
     gl.drawArrays( gl.TRIANGLES, 0, NumVertices );
 }
 
@@ -233,16 +269,16 @@ var render = function() {
 
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT );
 
-    modelViewMatrix = rotate(theta[Chest], 0, 1, 0 );
+    modelViewMatrix = rotate(theta[0], 0, 1, 0);
     chest();
-/*
-    modelViewMatrix = mult(modelViewMatrix, translate(0.0, CHEST_HEIGHT, 0.0));
-    modelViewMatrix = mult(modelViewMatrix, rotate(theta[LowerArm], 0, 0, 1 ));
-    lowerArm();
 
-    modelViewMatrix  = mult(modelViewMatrix, translate(0.0, LOWER_ARM_HEIGHT, 0.0));
-    modelViewMatrix  = mult(modelViewMatrix, rotate(theta[UpperArm], 0, 0, 1) );
-    upperArm(); */
+    modelViewMatrix = mult(modelViewMatrix, translate(0.0, CHEST_HEIGHT, 0.0));
+    modelViewMatrix = mult(modelViewMatrix, rotate(0, 0, 1, 0));
+    head();
+
+    modelViewMatrix  = mult(modelViewMatrix, translate(0.0, -CHEST_HEIGHT * 2, 0.0));
+    modelViewMatrix  = mult(modelViewMatrix, rotate(0, 0, 1, 0) );
+    leftLeg(); 
 
     requestAnimFrame(render);
 }
