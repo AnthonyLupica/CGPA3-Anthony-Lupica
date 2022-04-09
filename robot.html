@@ -31,6 +31,7 @@ blocks, cylinders, ...) and colors.
             
             void main()
             {
+                fColor = vColor;
                 gl_Position = projectionMatrix * modelViewMatrix * vPosition;
             }
         </script>
@@ -67,7 +68,7 @@ blocks, cylinders, ...) and colors.
             
             <i id="quit"><strong>Quit</strong></i> <i>/ “q”</i>
             <hr>
-            Tell Ro-bot what to do <input type="text" size="40" onkeydown="robotControl(event)" id="inputBox">
+            Tell Ro-bot what to do <input type="text" size="40" onkeydown="menu(event)" id="inputBox">
         </pre>
 
         <p id="test"></p>
@@ -75,7 +76,7 @@ blocks, cylinders, ...) and colors.
         <!-- script for handling keyboard input -->
         <script>
             // triggered on key enter into text box
-            function robotControl(event) 
+            function menu(event) 
             {
                 // reset colors to black
                 document.getElementById("blink").style.color = "black";
