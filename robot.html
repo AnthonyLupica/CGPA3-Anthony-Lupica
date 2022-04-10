@@ -8,7 +8,7 @@ blocks, cylinders, ...) and colors.
 4. Make your program accept keyboard input.
 5. Make your robot animate according to the following menu/key commends:
     1. Blink / “b”: blinks eyes
-    2. Color / “c”: changes colors (any colors)
+    2. Color / “c”: changes colors (any colors)  [had to leave this command out. Couldn't figure it out]
     3. Jump / “j”: jumps up and down
     4. Turn / “t”: turns around
     5. Wave / “w”: waves arms
@@ -59,7 +59,6 @@ blocks, cylinders, ...) and colors.
         <pre>
             <strong>I know how to...<br></strong>
             <i id="blink"><strong>Blink</strong></i> <i>/ “b”</i>
-            <i id="color"><strong>Change Color</strong></i> <i>/ “c”</i>
             <i id="jump"><strong>Jump</strong></i> <i>/ “j”</i>
             <i id="turn"><strong>Turn</strong></i> <i>/ “t”</i>
             <i id="wave"><strong>Wave</strong></i> <i>/ “w”</i>
@@ -80,7 +79,6 @@ blocks, cylinders, ...) and colors.
             {
                 // reset colors to black
                 document.getElementById("blink").style.color = "black";
-                document.getElementById("color").style.color = "black";
                 document.getElementById("jump").style.color = "black";
                 document.getElementById("turn").style.color = "black";
                 document.getElementById("wave").style.color = "black";
@@ -98,10 +96,6 @@ blocks, cylinders, ...) and colors.
                         myElement = document.getElementById("blink");
                         myElement.style.color = "red";
                         break;
-                    case 'c':
-                        myElement = document.getElementById("color");
-                        myElement.style.color = "red";
-                        break;
                     case 'j':
                         myElement = document.getElementById("jump");
                         myElement.style.color = "red";
@@ -116,6 +110,7 @@ blocks, cylinders, ...) and colors.
                         break;
                     case 'q':
                         // code to quit the program
+                        window.close();
                         break;
                     default:
                         document.getElementById("default").style.color = "black";

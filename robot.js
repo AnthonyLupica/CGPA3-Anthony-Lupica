@@ -36,14 +36,14 @@ var vertices =
 // RGBA colors
 var vertexColors = 
 [
-    vec4(0.9,  0.9,  0.3, 1.0), // yellow
-    vec4(0.9, 0.65, 0.15, 1.0), // orange
-    vec4(0.9,  0.9,  0.3, 1.0), 
-    vec4(0.9,  0.9,  0.3, 1.0),
-    vec4(0.9, 0.65, 0.15, 1.0),
-    vec4(0.9,  0.9,  0.3, 1.0),
-    vec4(0.9,  0.9,  0.3, 1.0),
-    vec4(0.9,  0.9,  0.3, 1.0)  
+    vec4(0.15, 0.15,  0.0, 1.0), 
+    vec4( 0.9, 0.65, 0.15, 1.0), // orange
+    vec4(0.15, 0.15,  0.0, 1.0), 
+    vec4(0.15, 0.15,  0.0, 1.0),
+    vec4( 0.9, 0.65, 0.15, 1.0),
+    vec4(0.15, 0.15,  0.0, 1.0),
+    vec4(0.15, 0.15,  0.0, 1.0),
+    vec4(0.15, 0.15,  0.0, 1.0)   
 ];
 //--------------------------------------------------
 
@@ -71,6 +71,14 @@ var LEFT_ARM_DEPTH    = 2.0;
 var RIGHT_ARM_HEIGHT  = 5.0;
 var RIGHT_ARM_WIDTH   = 0.75;
 var RIGHT_ARM_DEPTH   = 2.0;
+
+var LEFT_EYE_HEIGHT   = 0.25;
+var LEFT_EYE_WIDTH    = 0.25;
+var LEFT_EYE_DEPTH    = 0.25;
+
+var RIGHT_EYE_HEIGHT  = 0.25;
+var RIGHT_EYE_WIDTH   = 0.25;
+var RIGHT_EYE_DEPTH   = 0.25;
 
 //--------------------------------------------------
 
@@ -148,13 +156,6 @@ window.onload = function initCanvas()
     
     //--function for handling user input to make transformations--//
 
- 
-    
-
-    
-  
-    
-    
     // onkeypress is deprecated... this whole thing might break in a few years
     document.getElementById("inputBox").onkeypress = function handleControls(event)  
     {
@@ -168,10 +169,6 @@ window.onload = function initCanvas()
             {
                 jump[1] += 1.5;
             }
-            else if (jump[1] == 1.5)
-            {
-                handleDown();
-            }
         } 
         if (event.key == 'w')
         {
@@ -184,9 +181,19 @@ window.onload = function initCanvas()
                 theta[1] -= 75;
             }
         }
-        if (event.key == 'q')
+        if (event.key == 'b')
         {
-            window.close();
+            if (LEFT_EYE_HEIGHT == 0.25 && RIGHT_EYE_HEIGHT == 0.25)
+            {
+                LEFT_EYE_HEIGHT -= 0.15;
+                RIGHT_EYE_HEIGHT -= 0.15;
+            }
+            else 
+            {
+                LEFT_EYE_HEIGHT += 0.15;
+                RIGHT_EYE_HEIGHT += 0.15;
+
+            }
         }
     }
 
@@ -197,8 +204,6 @@ window.onload = function initCanvas()
             jump[1] -= 1.5;
         }
     }
-
-   
 
     //--Configure WebGL--//
     
@@ -314,6 +319,29 @@ function rightArm()
 
 //----------------------------------------------------------------------------
 
+function leftEye() 
+{
+    var s = scale4(LEFT_EYE_WIDTH, LEFT_EYE_HEIGHT, LEFT_EYE_DEPTH);
+    var instanceMatrix = mult( translate( 0.0, 0.5 * LEFT_EYE_HEIGHT, 0.0 ), s);
+    var t = mult(modelViewMatrix, instanceMatrix);
+    gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(t) );
+    gl.drawArrays( gl.TRIANGLES, 0, NumVertices );
+}
+
+//----------------------------------------------------------------------------
+
+function rightEye() 
+{
+    var s = scale4(RIGHT_EYE_WIDTH, RIGHT_EYE_HEIGHT, RIGHT_EYE_DEPTH);
+    var instanceMatrix = mult( translate( 0.0, 0.5 * RIGHT_EYE_HEIGHT, 0.0 ), s);
+    var t = mult(modelViewMatrix, instanceMatrix);
+    gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(t) );
+    gl.drawArrays( gl.TRIANGLES, 0, NumVertices );
+}
+
+//----------------------------------------------------------------------------
+
+
 var render = function() {
 
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT );
@@ -338,7 +366,16 @@ var render = function() {
     modelViewMatrix  = mult(modelViewMatrix, rotate(0, 0, 1, 0));
     leftArm(); 
 
-    modelViewMatrix  = mult(modelViewMatrix, translate(CHEST_WIDTH + 1.25, 5, 0.0));
+    modelViewMatrix  = mult(modelViewMatrix, translate(CHEST_WIDTH - 1.5, CHEST_HEIGHT + 1.75, 1.0));
+    modelViewMatrix  = mult(modelViewMatrix, rotate(90, 0, 1, 0));
+    leftEye(); 
+
+    modelViewMatrix  = mult(modelViewMatrix, translate(0.0, 0.0, 0.80));
+    modelViewMatrix  = mult(modelViewMatrix, rotate(0, 0, 1, 0));
+    rightEye(); 
+
+    modelViewMatrix  = mult(modelViewMatrix, rotate(-90, 0, 1, 0));
+    modelViewMatrix  = mult(modelViewMatrix, translate(CHEST_WIDTH - 1.60, -2.25, -1.0));
     modelViewMatrix  = mult(modelViewMatrix, rotate(180, 0, 0, 1));
     modelViewMatrix  = mult(modelViewMatrix, rotate(theta[1], 0, 0, 1));
     rightArm(); 
