@@ -18,17 +18,4 @@ blocks, cylinders, ...) and colors.
   4. Turn / “t”: turns around
   5. Wave / “w”: waves arms
   6. Quit / “q”: quits the program
-------------------------------------------------------------------------
-Submission:
-
-(1)  Make a short screen-capture video of the operations of your robot.
-
-(2)  Make sure to demonstrate your bonus parts at the beginning of your video.
-
-(3)  Create a directory named as CGPA3-FirstName-LastName and put your
-video and code under it (including the “common” subdirectory).
-
-(3)  Also submit the directory through GoogleDrive.pdf. (Please submit it as a
-new folder. Submitting under a previous shared folder will not work.)
-Folder Name: CGPA3-FirstName-LastName
-Submission Email: uacsxiao@gmail.com
+  
