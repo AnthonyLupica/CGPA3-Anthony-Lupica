@@ -13,9 +13,8 @@ blocks, cylinders, ...) and colors.
 5. Make your robot animate according to the following menu/key commends:
 ------------------------------------------------------------------------
   1. Blink / “b”: blinks eyes
-  2. Color / “c”: changes colors (any colors)
-  3. Jump / “j”: jumps up and down
-  4. Turn / “t”: turns around
-  5. Wave / “w”: waves arms
-  6. Quit / “q”: quits the program
+  2. Jump / “j”: jumps up and down
+  3. Turn / “t”: turns around
+  4. Wave / “w”: waves arms
+  5. Quit / “q”: quits the program
   
