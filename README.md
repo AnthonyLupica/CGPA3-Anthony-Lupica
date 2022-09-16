@@ -13,22 +13,8 @@ blocks, cylinders, ...) and colors.
 5. Make your robot animate according to the following menu/key commends:
 ------------------------------------------------------------------------
   1. Blink / “b”: blinks eyes
-  2. Color / “c”: changes colors (any colors)
-  3. Jump / “j”: jumps up and down
-  4. Turn / “t”: turns around
-  5. Wave / “w”: waves arms
-  6. Quit / “q”: quits the program
-------------------------------------------------------------------------
-Submission:
-
-(1)  Make a short screen-capture video of the operations of your robot.
-
-(2)  Make sure to demonstrate your bonus parts at the beginning of your video.
-
-(3)  Create a directory named as CGPA3-FirstName-LastName and put your
-video and code under it (including the “common” subdirectory).
-
-(3)  Also submit the directory through GoogleDrive.pdf. (Please submit it as a
-new folder. Submitting under a previous shared folder will not work.)
-Folder Name: CGPA3-FirstName-LastName
-Submission Email: uacsxiao@gmail.com
+  2. Jump / “j”: jumps up and down
+  3. Turn / “t”: turns around
+  4. Wave / “w”: waves arms
+  5. Quit / “q”: quits the program
+  
